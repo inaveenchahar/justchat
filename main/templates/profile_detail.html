@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section>
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="img-thumbnail text-center">
+                        <h1>{{ selected_user.username }}</h1>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <a href="{% url 'index_room' selected_user.username %}" class="btn btn-primary">Chat</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
