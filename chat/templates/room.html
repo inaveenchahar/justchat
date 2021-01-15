@@ -1,19 +1,39 @@
-<!-- chat/templates/chat/room.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Room</title>
-</head>
-<body>
-    {% for text_message in all_messages %}
-        <p>{{ text_message.message }}</p>
-    {% endfor %}
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+{% extends 'base.html' %}
 
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
-    <h1>{{ room_name }}</h1>
+{% block title %} JustChat |
+    {% for user in current_room.room_members.all %}
+        {% if user.username != request.user.username %}
+            {{ user.username }}
+        {% endif %}
+    {% endfor %}
+{% endblock title %}
+{% block content %}
+    <section>
+        <div class="container py-5">
+            <h1>
+                {% for user in current_room.room_members.all %}
+                    {% if user.username != request.user.username %}
+                        {{ user.username }}
+                    {% endif %}
+                {% endfor %}
+            </h1>
+            {% for text_message in all_messages %}
+                <p class="my-0">{{ text_message.message }}</p>
+            {% endfor %}
+            <textarea id="chat-log" cols="100" rows="10"></textarea><br>
+            <div class="input-group fixed-bottom">
+                <input id="chat-message-input" type="text" class="form-control" size="50">
+                <div class="input-group-append">
+                    <input id="chat-message-submit" type="button" value="Send" class="btn btn-primary">
+{#                    <button class="btn btn-warning" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>#}
+                </div>
+            </div>
+{#            <textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
+{#            <input id="chat-message-input" type="text" size="100"><br>#}
+{#            <input id="chat-message-submit" type="button" value="Send" class="fixed-bottom btn btn-primary btn-block">#}
+        </div>
+    </section>
+
     {{ room_name|json_script:"room-name" }}
     <script>
         console.log({{ room.slug }})
@@ -52,5 +72,5 @@
             messageInputDom.value = '';
         };
     </script>
-</body>
-</html>
+
+{% endblock content %}

@@ -14,12 +14,12 @@
         <a style="font-size: 28px; font-family: 'Pacifico', cursive;" href="{% url 'main:home' %}" class="navbar-brand py-md-0">JustChat</a>
 
 
-        <a href="" class="d-md-none nav-link" style="color: rgba(0,0,0,.5)">
-            <i class="fa fa-shopping-cart my-0" aria-hidden="true"></i>
-        </a>
+{#        <a href="" class="d-md-none nav-link" style="color: rgba(0,0,0,.5)">#}
+{#            <i class="fa fa-shopping-cart my-0" aria-hidden="true"></i>#}
+{#        </a>#}
 
 
-        <button type="button" class="navbar-toggler order-first" data-toggle="collapse" data-target="#navbarCollapse">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -31,39 +31,39 @@
             </ul>
 
 
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item mr-md-2 d-none d-md-block">
-                    <a href="" class="nav-link">
-                        <i class="fa fa-shopping-cart my-0" aria-hidden="true"></i>
-                        {% if tcp > 0 %}
-                            <span class="badge badge-pill badge-light">{{ tcp }}</span>
-                        {% endif %}
-                    </a>
-                </li>
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="">Orders</a>
-                    </li>
-
-                {% else %}
-                    <li class="nav-item clearfix text-left">
-                        <a href="" class="btn nav-link font-weight-bold text-uppercase btn-light border text-dark px-5 px-md-3 d-inline-block mr-md-2">Login</a>
-                        <a href="" class="btn btn-warning nav-link font-weight-bold text-uppercase text-dark px-5 px-md-4 float-right float-md-none d-inline-block">Sign Up</a>
-                    </li>
-                {% endif %}
-            </ul>
-            <ul></ul>
+{#            <ul class="navbar-nav ml-auto">#}
+{#                <li class="nav-item mr-md-2 d-none d-md-block">#}
+{#                    <a href="" class="nav-link">#}
+{#                        <i class="fa fa-shopping-cart my-0" aria-hidden="true"></i>#}
+{#                        {% if tcp > 0 %}#}
+{#                            <span class="badge badge-pill badge-light">{{ tcp }}</span>#}
+{#                        {% endif %}#}
+{#                    </a>#}
+{#                </li>#}
+{#                {% if request.user.is_authenticated %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link text-white" href="">Orders</a>#}
+{#                    </li>#}
+{##}
+{#                {% else %}#}
+{#                    <li class="nav-item clearfix text-left">#}
+{#                        <a href="" class="btn nav-link font-weight-bold text-uppercase btn-light border text-dark px-5 px-md-3 d-inline-block mr-md-2">Login</a>#}
+{#                        <a href="" class="btn btn-warning nav-link font-weight-bold text-uppercase text-dark px-5 px-md-4 float-right float-md-none d-inline-block">Sign Up</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#            <ul></ul>#}
         </div>
 
          <!-- search form for smaller and below smaller screen. it will be hidden on above smaller screens(e.g. medium and large) -->
-        <form class="form-inline mt-1 mb-2 d-md-none" action="" method="GET">
-            <div class="input-group">
-                <input type="search" class="form-control" placeholder="Search" size="50" name="q" value="{{ request.GET.q }}">
-                <div class="input-group-append">
-                    <button class="btn btn-warning" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
-            </div>
-        </form>
+{#        <form class="form-inline mt-1 mb-2 d-md-none" action="" method="GET">#}
+{#            <div class="input-group">#}
+{#                <input type="search" class="form-control" placeholder="Search" size="50" name="q" value="{{ request.GET.q }}">#}
+{#                <div class="input-group-append">#}
+{#                    <button class="btn btn-warning" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </form>#}
     </nav>
 
     {% if messages %}
