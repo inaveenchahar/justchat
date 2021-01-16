@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+    {% load static %}
+
+    <section id="signUp">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8">
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="">
+                        <h2 class="text-center">Login</h2>
+
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="img-thumbnail p-md-4 p-4">
+                            <form method="POST" action="{% url 'accounts:login' %}">
+                            {% csrf_token %}
+                                <p class="mb-3 mt-1">{{ form.username }}</p>
+                                <p class="my-3">{{ form.password }}</p>
+                                <button type="submit" class="btn btn-outline-warning btn-block py-3 my-3 text-uppercase font-weight-bold">
+                                    Login <i class="fa px-3 fa-2x fa-long-arrow-right my-0" aria-hidden="true" style="vertical-align: middle"></i>
+                                </button>
+                            </form>
+                            <div>
+                                <span>New here?</span> <a href="{% url 'accounts:sign_up' %}">Create Account</a>
+                            </div>
+                            <div>
+                                <a href="{% url 'accounts:password_reset' %}">Forgot Password</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock content %}

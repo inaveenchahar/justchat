@@ -30,29 +30,31 @@
                 </li>
             </ul>
 
+            <ul class="navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#messages">Messages</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#">
+                            Hi,  <span class="text-uppercase">{{ user.username }}</span>
+                        </a>
+                        <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+{#                        <a class="dropdown-item" href="#"></a>#}
+                    </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'accounts:sign_up' %}">Join</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'accounts:login' %}">Login</a>
+                    </li>
+                {% endif %}
 
-{#            <ul class="navbar-nav ml-auto">#}
-{#                <li class="nav-item mr-md-2 d-none d-md-block">#}
-{#                    <a href="" class="nav-link">#}
-{#                        <i class="fa fa-shopping-cart my-0" aria-hidden="true"></i>#}
-{#                        {% if tcp > 0 %}#}
-{#                            <span class="badge badge-pill badge-light">{{ tcp }}</span>#}
-{#                        {% endif %}#}
-{#                    </a>#}
-{#                </li>#}
-{#                {% if request.user.is_authenticated %}#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link text-white" href="">Orders</a>#}
-{#                    </li>#}
-{##}
-{#                {% else %}#}
-{#                    <li class="nav-item clearfix text-left">#}
-{#                        <a href="" class="btn nav-link font-weight-bold text-uppercase btn-light border text-dark px-5 px-md-3 d-inline-block mr-md-2">Login</a>#}
-{#                        <a href="" class="btn btn-warning nav-link font-weight-bold text-uppercase text-dark px-5 px-md-4 float-right float-md-none d-inline-block">Sign Up</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
-{#            </ul>#}
-{#            <ul></ul>#}
+            </ul>
         </div>
 
          <!-- search form for smaller and below smaller screen. it will be hidden on above smaller screens(e.g. medium and large) -->
