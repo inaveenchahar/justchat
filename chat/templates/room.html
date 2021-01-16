@@ -10,35 +10,89 @@
 {% block content %}
     <section>
         <div class="container py-5">
-            <h1>
-                {% for user in current_room.room_members.all %}
-                    {% if user.username != request.user.username %}
-                        {{ user.username }}
-                    {% endif %}
-                {% endfor %}
-            </h1>
+{#            <h1>#}
+{#                {% for user in current_room.room_members.all %}#}
+{#                    {% if user.username != request.user.username %}#}
+{#                        {{ user.username }}#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </h1>#}
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+
+                    <div class="card">
+                        <div class="card-header py-2">
+                            <h3 class="card-title text-capitalize my-1">
+                                {% for user in current_room.room_members.all %}
+                                    {% if user.username != request.user.username %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                {% endfor %}
+                            </h3>
+                        </div>
+
+                        <div class="card-body" id="chatWindow" style="height: 300px; overflow-y: auto">
+                            <div class="d-flex justify-content-between">
+        {#                        <img class="mr-3 align-self-start" src="https://www.freeiconspng.com/uploads/blue-user-icon-32.jpg" style="height: 80px; width: 80px; border-radius: 40px">#}
+                                <div class="border mr-3 align-self-baseline bg-light" style="height: 60px; width: 60px; border-radius: 30px; flex: 0 0 60px">
+                                    <p class="text-center font-weight-bold text-danger text-uppercase" style="padding-top:20px; font-size: 18px">
+                                        {% for user in current_room.room_members.all %}
+                                            {% if user.username != request.user.username %}
+                                                {{ user.username|slice:"1" }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <p class="p-3 rounded bg-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab ad adipisci commodi consectetur deleniti distinctio est eum explicabo facere minus molestias nam necessitatibus, obcaecati odio qui repellat repellendus sequi tempora temporibus vitae voluptates voluptatibus. Aspernatur assumenda aut dignissimos distinctio dolor ea earum harum quo reprehenderit sunt. Accusamus animi beatae commodi corporis enim illo libero molestias, mollitia nihil optio pariatur quae quibusdam rem ullam vel. Eos eum magni nobis praesentium!</p>
+                            </div>
+                            {% for message in all_messages %}
+                             <div class="d-flex justify-content-between">
+        {#                        <img class="mr-3 align-self-start" src="https://www.freeiconspng.com/uploads/blue-user-icon-32.jpg" style="height: 80px; width: 80px; border-radius: 40px">#}
+                                <div class="border mr-3 align-self-baseline bg-light" style="height: 40px; width: 40px; border-radius: 20px; flex: 0 0 40px">
+                                    <p class="text-center font-weight-bold text-danger text-uppercase" style="padding-top:10px; font-size: 18px">
+                                        {{ message.sent_by.username|slice:"1" }}
+                                    </p>
+                                </div>
+                                 <p class="p-3 rounded bg-light flex-grow-1 text-right">{{ message.message|capfirst }}</p>
+                             </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="card-footer p-0">
+                            <div class="input-group">
+                                <input id="chat-message-input" type="text" class="form-control" size="50">
+                                <div class="input-group-append">
+                                    <input id="chat-message-submit" type="button" value="Send" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             {% for text_message in all_messages %}
                 <p class="my-0">{{ text_message.message }}</p>
             {% endfor %}
-            <textarea id="chat-log" cols="100" rows="10"></textarea><br>
-            <div class="input-group fixed-bottom">
-                <input id="chat-message-input" type="text" class="form-control" size="50">
-                <div class="input-group-append">
-                    <input id="chat-message-submit" type="button" value="Send" class="btn btn-primary">
-{#                    <button class="btn btn-warning" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>#}
-                </div>
-            </div>
-{#            <textarea id="chat-log" cols="100" rows="20"></textarea><br>#}
-{#            <input id="chat-message-input" type="text" size="100"><br>#}
-{#            <input id="chat-message-submit" type="button" value="Send" class="fixed-bottom btn btn-primary btn-block">#}
+{#            <textarea class="position-fixed" id="chat-log" cols="100" rows="10" style="overflow-y: scroll"></textarea><br>#}
+{#            <div class="input-group fixed-bottom">#}
+{#                <input id="chat-message-input" type="text" class="form-control" size="50">#}
+{#                <div class="input-group-append">#}
+{#                    <input id="chat-message-submit" type="button" value="Send" class="btn btn-primary">#}
+{#                </div>#}
+{#            </div>#}
         </div>
     </section>
 
     {{ room_name|json_script:"room-name" }}
     <script>
+        var objDiv = document.getElementById("chatWindow");
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+
         console.log({{ room.slug }})
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-        {#const roomName = {{ room.slug }}#}
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
