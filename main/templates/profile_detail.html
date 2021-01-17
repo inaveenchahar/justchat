@@ -1,16 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile_detail.css' %}">
+
     <section>
-        <div class="container py-5">
+        <div class="container py-4 my-md-5">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="img-thumbnail text-center">
-                        <h1>{{ selected_user.username }}</h1>
+                <div class="col-md-4">
+
+                    <div class="card">
+                        {% if not profile.profile_pic %}
+                            {% if profile.gender == 'Male' %}
+                                <img id="pImage" alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                            {% elif profile.gender == 'Female' %}
+                                <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                            {% else %}
+                                <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                            {% endif %}
+                        {% else %}
+                            <img alt="{{ profile.username }} pic" class="card-img-top" src="{{ profile.profile_pic.url }}">
+                        {%endif %}
+                        <div class="card-header">
+                            <h3 class="my-1">{{ profile.user.username }}</h3>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <a href="{% url 'index_room' selected_user.username %}" class="btn btn-primary">Chat</a>
+                <div class="col-md-6 offset-md-2">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Name</td>
+                                <td>{{ profile.user.first_name }} {{ profile.user.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Age</td>
+                                <td>{{ profile.age }}</td>
+
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td>{{ profile.gender }}</td>
+                            </tr>
+                            <tr>
+                                <td>Bio</td>
+                                <td>Lorem ipsum dolor sit amet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <a href="{% url 'index_room' profile.user.username %}" class="btn btn-primary btn-block py-2">Message</a>
                 </div>
             </div>
         </div>

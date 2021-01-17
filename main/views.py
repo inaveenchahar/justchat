@@ -12,4 +12,5 @@ def home(request):
 
 def profile_detail(request, username):
     selected_user = get_object_or_404(User, username=username)
-    return render(request, 'profile_detail.html', {'selected_user': selected_user})
+    profile = get_object_or_404(ProfileModel, user=selected_user)
+    return render(request, 'profile_detail.html', {'profile': profile})

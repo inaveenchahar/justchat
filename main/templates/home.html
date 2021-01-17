@@ -6,7 +6,7 @@
         <div class="container py-5">
             <div class="row">
                 {% for user in all_user %}
-                    <div class="col-md-1 px-1 mb-2">
+                    <div class="col-md-1 col-4 px-1 mb-2">
                         <a href="{% url 'main:profile_detail' user.user.username %}" class="text-dark text-decoration-none">
                             <div class="card bg-light">
                                 {% if not user.profile_pic %}
