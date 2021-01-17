@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    {% load static %}
     <section>
         <div class="container py-5">
             <div class="row">
                 {% for user in all_user %}
-                    <div class="col-md-2 px-1">
-                        <a href="{% url 'main:profile_detail' user.username %}" class="text-dark text-decoration-none">
+                    <div class="col-md-1 px-1 mb-2">
+                        <a href="{% url 'main:profile_detail' user.user.username %}" class="text-dark text-decoration-none">
                             <div class="card bg-light">
+                                {% if not user.profile_pic %}
+                                    {% if user.gender == 'Male' %}
+                                        <img alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                    {% elif user.gender == 'Female' %}
+                                        <img alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                                    {% else %}
+                                        <img alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                                    {% endif %}
+                                {% else %}
+                                    <img alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profile_pic.url }}">
+                                {%endif %}
                                 <div class="card-body p-1">
-                                    <p class="card-title mb-0">{{ user.username }}</p>
+                                    <p class="card-title mb-0" style="font-size: 10px">{{ user.user.username }}</p>
                                 </div>
                             </div>
                         </a>

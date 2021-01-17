@@ -7,6 +7,6 @@ from .models import ProfileModel
 @admin.register(ProfileModel)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'age', 'added_on', 'updated_on']
-    search_fields = ['user']
+    search_fields = ['user__username']
     list_per_page = 20
     list_filter = ['gender']
