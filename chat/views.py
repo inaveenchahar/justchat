@@ -23,6 +23,11 @@ def index(request):
         return HttpResponse('Login required')
 
 
+def inbox_conversation(request):
+    all_conversations = Room.objects.filter(room_members__in=[request.user])
+    return render(request, 'inbox_conversation.html', {'all_conversations': all_conversations})
+
+
 def index_room(request, username):
     if request.user.is_authenticated:
         selected_user = User.objects.get(username=username)
