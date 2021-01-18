@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, UserEditForm, ProfileEditForm
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import ProfileModel
+
 
 
 def sign_up(request):
@@ -80,3 +81,30 @@ def login_view(request):
     else:
         form = LoginForm()
     return render(request, 'login_view.html', {'form': form})
+
+
+def edit_profile(request, username):
+    # checks if user is authenticated or not
+    if request.user.is_authenticated:
+        # checks authenticated user is accessing his own profile if not then redirect him to his profile
+        if request.user.username == username:
+            selected_profile = ProfileModel.objects.get(user=request.user)  # getting profile of user
+            if request.method == 'POST':
+                # gets instance of User and Profile Model
+                u_form = UserEditForm(request.POST, instance=request.user)
+                p_form = ProfileEditForm(request.POST, request.FILES, instance=selected_profile)
+                if u_form.is_valid() and p_form.is_valid():
+                    u_form.save()
+                    p_form.save()
+                    return redirect('accounts:edit_profile', request.user.username)
+            else:
+                u_form = UserEditForm(instance=request.user)
+                p_form = ProfileEditForm(instance=selected_profile)
+            return render(request, 'edit_profile.html', {'selected_profile': selected_profile,
+                                                         'u_form': u_form,
+                                                         'p_form': p_form,
+                                                         })
+        else:
+            return redirect('accounts:edit_profile', request.user.username)
+    else:
+        return redirect('main:home')

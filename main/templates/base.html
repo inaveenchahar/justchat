@@ -40,7 +40,7 @@
                             Hi,  <span class="text-uppercase">{{ user.username }}</span>
                         </a>
                         <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="{% url 'accounts:edit_profile' request.user.username %}">Profile</a>
                         <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
 {#                        <a class="dropdown-item" href="#"></a>#}
                     </div>

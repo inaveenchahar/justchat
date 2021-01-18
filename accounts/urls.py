@@ -10,6 +10,8 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.log_out, name='logout'),
 
+    path('<username>/edit/', views.edit_profile, name='edit_profile'),
+
     # password reset
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html', success_url=reverse_lazy('accounts:password_reset_done')), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
-
+from .models import ProfileModel
 
 
 class SignUpForm(forms.ModelForm):
@@ -47,3 +47,40 @@ class LoginForm(AuthenticationForm):
         'placeholder': 'Password',
         'style': 'font-size:14px',
     }), label='Password', required=True)
+
+
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'First Name',
+        'style': 'font-size:14px;',
+    }), label='First Name')
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Last Name',
+        'style': 'font-size:14px;',
+    }), label='Last Name')
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
+
+
+class ProfileEditForm(forms.ModelForm):
+    GENDER = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Others', 'Others')
+    )
+    AGE = [(i, i) for i in range(16, 101)]
+    gender = forms.ChoiceField(choices=GENDER, widget=forms.Select(attrs={
+        'class': 'form-control',
+    }), label='Gender')
+    age = forms.ChoiceField(choices=AGE, widget=forms.Select(attrs={
+        'class': 'form-control',
+    }), label='Age')
+
+    class Meta:
+        model = ProfileModel
+        fields = ['profile_pic', 'age', 'gender']
+
