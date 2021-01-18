@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
-
+from django.utils.timezone import datetime
 # Create your models here.
 
 
@@ -10,6 +10,7 @@ class Room(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(editable=False, default=uuid.uuid4)
     room_members = models.ManyToManyField(User, related_name='RoomMembers')
+    last_text_send_at = models.DateTimeField(default=datetime.now)
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 

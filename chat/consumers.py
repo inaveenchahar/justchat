@@ -3,6 +3,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .models import ChatModel, Room
+from django.utils.timezone import datetime
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -42,6 +43,8 @@ class ChatConsumer(WebsocketConsumer):
         room_slug = self.scope['url_route']['kwargs']['room_name']
         current_room = Room.objects.get(slug=room_slug)
         new_message = ChatModel.objects.create(sent_by=self.scope['user'], message=message, room=current_room)
+        current_room.last_text_send_at = datetime.now()
+        current_room.save()
 
     # Receive message from room group
     def chat_message(self, event):
