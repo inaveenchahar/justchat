@@ -5,6 +5,7 @@ from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
+from .models import ProfileModel
 
 
 def sign_up(request):
@@ -26,6 +27,7 @@ def sign_up(request):
                 email=instance.email,
                 password=instance.password
             )
+            new_profile = ProfileModel.objects.create(user=new_user)
             """
                 try else is to send email
             """

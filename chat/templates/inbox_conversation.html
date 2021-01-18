@@ -1,27 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    {% load static %}
     <section>
-        <div class="py-5 container">
+        <div class="py-3 py-md-5 container">
             <div class="row">
                 <div class="col-md-6">
                     <h2 class=''>Messages</h2>
-                    <hr>
-                    <div class="bg-success">
+                    <div class="bg-light">
+                        {# iterate all room the user is present in and sorted by last text sent time #}
                         {% for conversation in all_conversations|dictsortreversed:"last_text_send_at" %}
+
+                            {# check if the room have more than 1 msg if yes then it will show that room #}
                             {% if conversation.chatmodel_set.all.count > 0 %}
 
+                                {# to get the memebers name of the group #}
                                 {% for member in conversation.room_members.all %}
+
+                                    {# skip the current/request user name #}
                                     {% if member.username != request.user.username %}
-                                        <a class="img-thumbnail border-0 rounded-0 d-block text-decoration-none text-dark p-3 bg-light" href="{% url 'room' conversation.slug %}">
+                                        <a class="img-thumbnail border-0 rounded-0 d-block text-decoration-none text-dark p-2 bg-light" href="{% url 'room' conversation.slug %}">
+                                            {% if not member.profilemodel.profile_pic %}
+                                                {% if member.profilemodel.gender == 'Male' %}
+                                                    <img alt="default male pic" class="mr-2" src="{% static 'static_images/male_profile_pic.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
+                                                {% elif member.profilemodel.gender == 'Female' %}
+                                                    <img alt="default female pic" class="mr-2" src="{% static 'static_images/female_profile_pic.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
+                                                {% else %}
+                                                    <img alt="default female pic" class="mr-2" src="{% static 'static_images/bigender.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
+                                                {% endif %}
+                                            {% else %}
+                                                <img class="mr-2" src="{{ member.profilemodel.profile_pic.url }}" style="height: 44px; width: 44px; border-radius: 50%">
+                                            {%endif %}
                                             <span class="font-weight-bold">{{ member.first_name }}</span>
                                             <span class="float-right small">{{ conversation.last_text_send_at }}</span>
                                         </a>
                                     {% endif %}
-                                {% endfor %}
 
+                                {% endfor %}
+                                
                             {% endif %}
+
                         {% endfor %}
                     </div>
                 </div>
