@@ -7,11 +7,16 @@
             <h2 class="text-uppercase">All Messages</h2>
             <hr>
             {% for conversation in all_conversations %}
-                {% for member in conversation.room_members.all %}
-                    {% if member.username != request.user.username %}
-                        <a class="img-thumbnail d-block text-decoration-none text-dark p-3 mb-3 bg-light" href="{% url 'room' conversation.slug %}">{{ member.first_name }}</a>
-                    {% endif %}
-                {% endfor %}
+                {% if conversation.chatmodel_set.all.count > 0 %}
+{#                {% for choice in conversation.chatmodel_set.all %}#}
+{#                    {{ choice }}#}
+{#                {% endfor %}#}
+                    {% for member in conversation.room_members.all %}
+                        {% if member.username != request.user.username %}
+                            <a class="img-thumbnail d-block text-decoration-none text-dark p-3 mb-3 bg-light" href="{% url 'room' conversation.slug %}">{{ member.first_name }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
 
             {% endfor %}
         </div>
