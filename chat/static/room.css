@@ -1,0 +1,12 @@
+#senderMsg, #receiverMsg{
+    display: inline-block;
+}
+
+#senderMsg{
+    text-align: right;
+    float: right;
+}
+
+#receiverMsg{
+    text-align: left;
+}

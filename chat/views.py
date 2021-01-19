@@ -41,30 +41,15 @@ def index_room(request, username):
         new_room.room_members.add(request.user, selected_user)
         new_room.save()
         return redirect('room', new_room.slug)
-        # return redirect('main:profile_detail', username)
+    return redirect('main:home')
 
-
-# def room(request, room_name):
-#     room = get_object_or_404(Room, slug=slug)
-#     print('\n room view\n')
-#     return render(request, 'room.html', {'room': room})
-
-# def room_view(request, room_name):
-#     if request.user.is_authenticated:
-#         current_room = get_object_or_404(Room, slug=room_name)
-#         all_messages = ChatModel.objects.filter(room=current_room)
-#         return render(request, 'room.html', {'room_name': room_name,
-#                                              'current_room': current_room,
-#                                              'all_messages': all_messages
-#                                              })
-#     else:
-#         return HttpResponse('Login required')
 
 def room_view(request, room_name):
     if request.user.is_authenticated:
         current_room = get_object_or_404(Room, slug=room_name)
         if request.user in current_room.room_members.all():
-            all_messages = ChatModel.objects.filter(room=current_room)
+            # only last 50 messages will be visible in the room
+            all_messages = ChatModel.objects.filter(room=current_room).order_by('added_on')[:50]
             return render(request, 'room.html', {'room_name': room_name,
                                                  'current_room': current_room,
                                                  'all_messages': all_messages

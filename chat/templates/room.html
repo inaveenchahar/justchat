@@ -8,15 +8,12 @@
     {% endfor %}
 {% endblock title %}
 {% block content %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'room.css' %}">
+
     <section>
         <div class="container py-5">
-{#            <h1>#}
-{#                {% for user in current_room.room_members.all %}#}
-{#                    {% if user.username != request.user.username %}#}
-{#                        {{ user.username }}#}
-{#                    {% endif %}#}
-{#                {% endfor %}#}
-{#            </h1>#}
+
             <div class="row">
                 <div class="col-md-8 offset-md-2">
 
@@ -31,32 +28,16 @@
                             </h3>
                         </div>
 
-                        <div class="card-body" id="chatWindow" style="height: 300px; overflow-y: auto">
-                            <div class="d-flex justify-content-between">
-        {#                        <img class="mr-3 align-self-start" src="https://www.freeiconspng.com/uploads/blue-user-icon-32.jpg" style="height: 80px; width: 80px; border-radius: 40px">#}
-                                <div class="border mr-3 align-self-baseline bg-light" style="height: 60px; width: 60px; border-radius: 30px; flex: 0 0 60px">
-                                    <p class="text-center font-weight-bold text-danger text-uppercase" style="padding-top:20px; font-size: 18px">
-                                        {% for user in current_room.room_members.all %}
-                                            {% if user.username != request.user.username %}
-                                                {{ user.username|slice:"1" }}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </p>
-                                </div>
-                                <p class="p-3 rounded bg-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab ad adipisci commodi consectetur deleniti distinctio est eum explicabo facere minus molestias nam necessitatibus, obcaecati odio qui repellat repellendus sequi tempora temporibus vitae voluptates voluptatibus. Aspernatur assumenda aut dignissimos distinctio dolor ea earum harum quo reprehenderit sunt. Accusamus animi beatae commodi corporis enim illo libero molestias, mollitia nihil optio pariatur quae quibusdam rem ullam vel. Eos eum magni nobis praesentium!</p>
-                            </div>
+                        <div class="card-body" id="chatWindow" style="height: 350px; overflow-y: auto">
                             {% for message in all_messages %}
-                             <div class="d-flex justify-content-between">
-        {#                        <img class="mr-3 align-self-start" src="https://www.freeiconspng.com/uploads/blue-user-icon-32.jpg" style="height: 80px; width: 80px; border-radius: 40px">#}
-                                <div class="border mr-3 align-self-baseline bg-light" style="height: 40px; width: 40px; border-radius: 20px; flex: 0 0 40px">
-                                    <p class="text-center font-weight-bold text-danger text-uppercase" style="padding-top:10px; font-size: 18px">
-                                        {{ message.sent_by.username|slice:"1" }}
-                                    </p>
+                                <div class="clearfix">
+                                    {% if message.sent_by == request.user %}
+                                            <p id="senderMsg" class="px-3 py-2 bg-info rounded">{{ message.message }}</p>
+                                    {% else %}
+                                            <p id="receiverMsg" class="px-3 py-2 bg-light rounded">{{ message.message }}</p>
+                                    {% endif %}
                                 </div>
-                                 <p class="p-3 rounded bg-light flex-grow-1 text-right">{{ message.message|capfirst }}</p>
-                             </div>
                             {% endfor %}
-
                         </div>
 
                         <div class="card-footer p-0">
@@ -71,10 +52,6 @@
                 </div>
             </div>
 
-
-            {% for text_message in all_messages %}
-                <p class="my-0">{{ text_message.message }}</p>
-            {% endfor %}
 {#            <textarea class="position-fixed" id="chat-log" cols="100" rows="10" style="overflow-y: scroll"></textarea><br>#}
 {#            <div class="input-group fixed-bottom">#}
 {#                <input id="chat-message-input" type="text" class="form-control" size="50">#}
@@ -90,8 +67,6 @@
         var objDiv = document.getElementById("chatWindow");
         objDiv.scrollTop = objDiv.scrollHeight;
 
-
-        console.log({{ room.slug }})
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const chatSocket = new WebSocket(
             'ws://'
@@ -103,7 +78,29 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+
+            var para_div = document.createElement("div");
+            para_div.className ="clearfix";
+
+            var para = document.createElement("p");
+            if (data.sent_by === '{{ request.user }}'){
+                para.setAttribute('id', 'senderMsg');
+                para.className = 'bg-info';
+            }else{
+                para.setAttribute('id', 'receiverMsg');
+                para.className = 'bg-light';
+            }
+            para.classList.add("px-3", "py-2", "rounded");
+
+            var node = document.createTextNode(data.message);
+            para.appendChild(node);
+            para_div.appendChild(para);
+            var element = document.getElementById("chatWindow");
+            element.appendChild(para_div);
+
+            var objDiv = document.getElementById("chatWindow");
+            objDiv.scrollTop = objDiv.scrollHeight;
+            {#document.querySelector('#chat-log').value = (data.message + '-' + data.sent_by + '\n');#}
          };
 
         chatSocket.onclose = function(e) {

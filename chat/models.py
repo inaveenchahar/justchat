@@ -27,3 +27,6 @@ class ChatModel(models.Model):
 
     def __str__(self):
         return self.sent_by.username
+
+    class Meta:
+        ordering = ['-added_on']

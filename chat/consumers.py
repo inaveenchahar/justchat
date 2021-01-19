@@ -49,7 +49,14 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from room group
     def chat_message(self, event):
         message = event['message']
+        # gets the most recent message from the room by filtering room slug
+        room_slug = self.scope['url_route']['kwargs']['room_name']
+        current_room = Room.objects.get(slug=room_slug)
+        last_message = ChatModel.objects.filter(room=current_room).first()
+
         # Send message to WebSocket
+        print(last_message.sent_by, message)
         self.send(text_data=json.dumps({
-            'message': message
+            'message': last_message.message,
+            'sent_by': last_message.sent_by.username,
         }))
