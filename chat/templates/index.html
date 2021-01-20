@@ -94,3 +94,73 @@
                     {% endfor %}
 
                 </div>
+
+
+
+<div class="col-md-3 d-none d-md-block">
+                    {% for user in current_room.room_members.all %}
+                        {% if user.username != request.user.username %}
+                            <div class="card">
+                                {% if not profile.profile_pic %}
+                                    {% if profile.gender == 'Male' %}
+                                        <img id="pImage" alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                    {% elif profile.gender == 'Female' %}
+                                        <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                                    {% else %}
+                                        <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                                    {% endif %}
+                                {% else %}
+                                    <img alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profilemodel.profile_pic.url }}">
+                                {%endif %}
+                                <div class="card-body py-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Name</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">{{ user.first_name }} {{ user.last_name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Age</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">
+                                                {% if user.profilemodel.age %}
+                                                    {{ user.profilemodel.age }}
+                                                {% else %}
+                                                    --
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Gender</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">
+                                                {% if user.profilemodel.gender %}
+                                                    {{ user.profilemodel.gender }}
+                                                {% else %}
+                                                    --
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Bio</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, quis?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ user.username }}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
