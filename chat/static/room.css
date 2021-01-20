@@ -1,12 +1,48 @@
+#pImage{
+    max-height: 220px;
+}
+
+#chatWindow{
+    overflow: auto;
+    height: 390px;
+}
+
+@media screen and (max-width: 582px) {
+    .card{
+        border: none;
+    }
+    #lol{
+        bottom: 0;
+        position: fixed;
+        width: 100%;
+        left: 0;
+    }
+
+    #chatWindow{
+        height: 590px;
+        overflow: auto;
+    }
+}
+
+
 #senderMsg, #receiverMsg{
     display: inline-block;
 }
 
 #senderMsg{
-    text-align: right;
+    /*text-align: right;*/
     float: right;
 }
 
 #receiverMsg{
     text-align: left;
+}
+
+.form-control:focus{
+    box-shadow: none;
+}
+
+.form-control[type="text"]
+{
+    font-size:14px;
 }

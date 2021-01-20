@@ -12,13 +12,80 @@
     <link rel="stylesheet" type="text/css" href="{% static 'room.css' %}">
 
     <section>
-        <div class="container py-5">
+        <div class="container py-md-5 px-0">
 
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
+            <div class="row mx-0">
+                <div class="col-md-3 d-none d-md-block">
+                    {% for user in current_room.room_members.all %}
+                        {% if user.username != request.user.username %}
+                            <div class="card">
+                                {% if not profile.profile_pic %}
+                                    {% if profile.gender == 'Male' %}
+                                        <img id="pImage" alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                    {% elif profile.gender == 'Female' %}
+                                        <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                                    {% else %}
+                                        <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                                    {% endif %}
+                                {% else %}
+                                    <img alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profilemodel.profile_pic.url }}">
+                                {%endif %}
+                                <div class="card-body py-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Name</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">{{ user.first_name }} {{ user.last_name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Age</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">
+                                                {% if user.profilemodel.age %}
+                                                    {{ user.profilemodel.age }}
+                                                {% else %}
+                                                    --
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Gender</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">
+                                                {% if user.profilemodel.gender %}
+                                                    {{ user.profilemodel.gender }}
+                                                {% else %}
+                                                    --
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="mb-1">Bio</p>
+                                        </div>
+                                        <div class="col-8">
+                                            <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum, quis?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ user.username }}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+                <div class="col-md-8 px-0 offset-md-1">
 
                     <div class="card">
-                        <div class="card-header py-2">
+                        <div id="cHeader" class="card-header py-2">
                             <h3 class="card-title text-capitalize my-1">
                                 {% for user in current_room.room_members.all %}
                                     {% if user.username != request.user.username %}
@@ -27,24 +94,25 @@
                                 {% endfor %}
                             </h3>
                         </div>
+                        <div id="lol">
+                            <div class="card-body py-0 px-md-1" id="chatWindow">
+                                {% for message in all_messages %}
+                                    <div class="clearfix">
+                                        {% if message.sent_by == request.user %}
+                                                <p id="senderMsg" class="px-2 py-1 ml-md-5 ml-2 my-1 bg-info rounded">{{ message.message }}</p>
+                                        {% else %}
+                                                <p id="receiverMsg" class="px-2 py-1 my-1 bg-light rounded">{{ message.message }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
 
-                        <div class="card-body" id="chatWindow" style="height: 350px; overflow-y: auto">
-                            {% for message in all_messages %}
-                                <div class="clearfix">
-                                    {% if message.sent_by == request.user %}
-                                            <p id="senderMsg" class="px-3 py-2 bg-info rounded">{{ message.message }}</p>
-                                    {% else %}
-                                            <p id="receiverMsg" class="px-3 py-2 bg-light rounded">{{ message.message }}</p>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="card-footer p-0">
-                            <div class="input-group">
-                                <input id="chat-message-input" type="text" class="form-control" size="50">
-                                <div class="input-group-append">
-                                    <input id="chat-message-submit" type="button" value="Send" class="btn btn-primary">
+                            <div class="card-footer p-0">
+                                <div class="input-group">
+                                    <input id="chat-message-input" type="text" class="form-control rounded-0" size="50">
+                                    <div class="input-group-append">
+                                        <input id="chat-message-submit" type="button" value="Send" class="btn btn-info rounded-0">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -52,20 +120,15 @@
                 </div>
             </div>
 
-{#            <textarea class="position-fixed" id="chat-log" cols="100" rows="10" style="overflow-y: scroll"></textarea><br>#}
-{#            <div class="input-group fixed-bottom">#}
-{#                <input id="chat-message-input" type="text" class="form-control" size="50">#}
-{#                <div class="input-group-append">#}
-{#                    <input id="chat-message-submit" type="button" value="Send" class="btn btn-primary">#}
-{#                </div>#}
-{#            </div>#}
         </div>
     </section>
 
     {{ room_name|json_script:"room-name" }}
     <script>
+
         var objDiv = document.getElementById("chatWindow");
         objDiv.scrollTop = objDiv.scrollHeight;
+
 
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const chatSocket = new WebSocket(
@@ -90,7 +153,7 @@
                 para.setAttribute('id', 'receiverMsg');
                 para.className = 'bg-light';
             }
-            para.classList.add("px-3", "py-2", "rounded");
+            para.classList.add("px-2", "py-1", "my-1", "rounded");
 
             var node = document.createTextNode(data.message);
             para.appendChild(node);
@@ -100,14 +163,12 @@
 
             var objDiv = document.getElementById("chatWindow");
             objDiv.scrollTop = objDiv.scrollHeight;
-            {#document.querySelector('#chat-log').value = (data.message + '-' + data.sent_by + '\n');#}
          };
 
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
 
-        document.querySelector('#chat-message-input').focus();
         document.querySelector('#chat-message-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#chat-message-submit').click();
