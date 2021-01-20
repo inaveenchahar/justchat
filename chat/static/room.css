@@ -13,7 +13,7 @@
 }
 
 @media screen and (max-width: 582px) {
-    .card{
+    #chatCard{
         border: none;
         bottom: 0;
         position: fixed;

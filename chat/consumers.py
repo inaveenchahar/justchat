@@ -11,7 +11,6 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
-        print(self.room_group_name, self.room_name)
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -55,7 +54,6 @@ class ChatConsumer(WebsocketConsumer):
         last_message = ChatModel.objects.filter(room=current_room).first()
 
         # Send message to WebSocket
-        print(last_message.sent_by, message)
         self.send(text_data=json.dumps({
             'message': last_message.message,
             'sent_by': last_message.sent_by.username,
