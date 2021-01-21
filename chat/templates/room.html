@@ -64,8 +64,6 @@
 
                 <div class="col-md-8 px-0">
 
-
-
                     <div id="chatCard" class="card">
                         <div id="cHeader" class="card-header py-2">
                             {% for user in current_room.room_members.all %}
@@ -73,7 +71,6 @@
                                     {% if not user.profilemodel.profile_pic %}
                                         {% if user.profilemodel.gender == 'Others' %}
                                             <img class="d-inline-block mr-2" id="pImage" alt="default female pic" src="{% static 'static_images/bigender.jpg' %}">
-
                                         {% elif user.profilemodel.gender == 'Female' %}
                                             <img class="d-inline-block mr-2" id="pImage" alt="default female pic" src="{% static 'static_images/female_profile_pic.jpg' %}">
                                         {% else %}
@@ -82,11 +79,13 @@
                                     {% else %}
                                         <img class="d-inline-block mr-2" id="pImage" alt="{{ profile.username }} pic" src="{{ user.profilemodel.profile_pic.url }}">
                                     {%endif %}
-                                    <h3 class="card-title text-capitalize my-1 d-inline-block">{{ user.username }}</h3>
+                                    <a href="{% url 'main:profile_detail' user.username %}" class="text-dark text-decoration-none card-title d-inline-block my-1">
+                                        <h3 class="text-capitalize">{{ user.first_name }} {{ user.last_name }}</h3>
+                                    </a>
+
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <div id="lol">
                             <div class="card-body py-0 px-md-1" id="chatWindow">
                                 {% for message in all_messages %}
                                     <div class="clearfix">
@@ -107,7 +106,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -121,7 +119,6 @@
         var navHeight = document.getElementsByTagName('nav')[0];
         var cTitle = document.getElementById('cHeader');
         var cFooter = document.getElementsByClassName('card-footer')[0];
-
         var hRemoved = navHeight.offsetHeight + cTitle.offsetHeight + cFooter.offsetHeight;
 
         var chatWin = document.getElementById('chatWindow');
@@ -129,16 +126,14 @@
         chatWin.scrollTop = chatWin.scrollHeight;
 
         window.addEventListener('resize', function(event){
-            var newWidth = window.innerWidth;
-            var newHeight = window.innerHeight;
+           var newWidth = window.innerWidth;
+           var newHeight = window.innerHeight;
         });
         $(window).resize(function() {
-            console.log('window was resized');
-        });
-        window.resize = event => {
             chatWin.style.height = window.innerHeight - hRemoved + 'px';
             chatWin.scrollTop = chatWin.scrollHeight;
-        };
+        });
+
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         const chatSocket = new WebSocket(
             'ws://'
