@@ -3,30 +3,51 @@
 {% block content %}
     {% load static %}
     <section>
-        <div class="container py-5">
+        <div class="container py-3 py-md-5">
             <div class="row">
-                {% for user in all_user %}
-                    <div class="col-md-1 col-4 px-1 mb-2">
-                        <a href="{% url 'main:profile_detail' user.user.username %}" class="text-dark text-decoration-none">
-                            <div class="card bg-light">
-                                {% if not user.profile_pic %}
-                                    {% if user.gender == 'Male' %}
-                                        <img alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
-                                    {% elif user.gender == 'Female' %}
-                                        <img alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
-                                    {% else %}
-                                        <img alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
-                                    {% endif %}
-                                {% else %}
-                                    <img alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profile_pic.url }}">
-                                {%endif %}
-                                <div class="card-body p-1">
-                                    <p class="card-title mb-0" style="font-size: 10px">{{ user.user.username }}</p>
-                                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        {% for user in page_obj %}
+                            <div class="col-md-2 col-4 px-1 py-1">
+                                <a href="{% url 'main:profile_detail' user.user.username %}" class="text-dark text-decoration-none">
+                                    <div class="card bg-light">
+                                        {% if not user.profile_pic %}
+                                            {% if user.gender == 'Others' %}
+                                                <img alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                                            {% elif user.gender == 'Female' %}
+                                                <img alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                                            {% else %}
+                                                <img alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                            {% endif %}
+                                        {% else %}
+                                            <img alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profile_pic.url }}">
+                                        {%endif %}
+                                        <div class="card-body p-1">
+                                            <p class="card-title mb-0" style="font-size: 10px">{{ user.user.username }}</p>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+
+                    <div class="pagination my-3">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a class="badge badge-info badge-pill" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            {% endif %}
+
+{#                            <span class="current">#}
+{#                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#                            </span>#}
+
+                            {% if page_obj.has_next %}
+                                <a class="badge badge-info badge-pill" href="?page={{ page_obj.next_page_number }}">Next</a>
+{#                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

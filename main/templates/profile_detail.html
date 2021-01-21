@@ -11,12 +11,12 @@
 
                     <div class="card">
                         {% if not profile.profile_pic %}
-                            {% if profile.gender == 'Male' %}
-                                <img id="pImage" alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                            {% if profile.gender == 'Others' %}
+                                <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
                             {% elif profile.gender == 'Female' %}
                                 <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
                             {% else %}
-                                <img id="pImage" alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                                <img id="pImage" alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
                             {% endif %}
                         {% else %}
                             <img alt="{{ profile.username }} pic" class="card-img-top" src="{{ profile.profile_pic.url }}">
@@ -35,12 +35,11 @@
                             </tr>
                             <tr>
                                 <td>Age</td>
-                                <td>{{ profile.age }}</td>
-
+                                <td>{% if profile.age %} {{ profile.age }} {% else %} -- {% endif %}</td>
                             </tr>
                             <tr>
                                 <td>Gender</td>
-                                <td>{{ profile.gender }}</td>
+                                <td>{% if profile.gender %} {{ profile.gender }} {% else %} -- {% endif %}</td>
                             </tr>
                             <tr>
                                 <td>Bio</td>
@@ -50,7 +49,7 @@
                     </table>
 
 
-                    <a href="{% url 'index_room' profile.user.username %}" class="btn btn-primary btn-block py-2">Message</a>
+                    <a href="{% url 'index_room' profile.user.username %}" class="btn btn-primary btn-block py-3">Message</a>
                 </div>
             </div>
         </div>

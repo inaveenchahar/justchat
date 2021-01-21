@@ -21,16 +21,17 @@
                                     {% if member.username != request.user.username %}
                                         <a class="img-thumbnail border-0 rounded-0 d-block text-decoration-none text-dark p-2 bg-light" href="{% url 'room' conversation.slug %}">
                                             {% if not member.profilemodel.profile_pic %}
-                                                {% if member.profilemodel.gender == 'Male' %}
-                                                    <img alt="default male pic" class="mr-2" src="{% static 'static_images/male_profile_pic.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
+                                                {% if member.profilemodel.gender == 'Others' %}
+                                                    <img alt="default female pic" class="mr-2" src="{% static 'static_images/bigender.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
                                                 {% elif member.profilemodel.gender == 'Female' %}
                                                     <img alt="default female pic" class="mr-2" src="{% static 'static_images/female_profile_pic.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
                                                 {% else %}
-                                                    <img alt="default female pic" class="mr-2" src="{% static 'static_images/bigender.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
+                                                    <img alt="default male pic" class="mr-2" src="{% static 'static_images/male_profile_pic.jpg' %}"  style="height: 44px; width: 44px; border-radius: 50%">
                                                 {% endif %}
                                             {% else %}
-                                                <img class="mr-2" src="{{ member.profilemodel.profile_pic.url }}" style="height: 44px; width: 44px; border-radius: 50%">
+                                                <img alt="{{ member.username }} pic" class="mr-2" src="{{ member.profilemodel.profile_pic.url }}" style="height: 44px; width: 44px; border-radius: 50%">
                                             {%endif %}
+
                                             <span class="font-weight-bold">{{ member.first_name }}</span>
                                             <span class="float-right small">{{ conversation.last_text_send_at }}</span>
                                         </a>
