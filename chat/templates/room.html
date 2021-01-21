@@ -64,15 +64,27 @@
 
                 <div class="col-md-8 px-0">
 
+
+
                     <div id="chatCard" class="card">
                         <div id="cHeader" class="card-header py-2">
-                            <h3 class="card-title text-capitalize my-1">
-                                {% for user in current_room.room_members.all %}
-                                    {% if user.username != request.user.username %}
-                                        {{ user.username }}
-                                    {% endif %}
-                                {% endfor %}
-                            </h3>
+                            {% for user in current_room.room_members.all %}
+                                {% if user.username != request.user.username %}
+                                    {% if not user.profilemodel.profile_pic %}
+                                        {% if user.profilemodel.gender == 'Others' %}
+                                            <img class="d-inline-block mr-2" id="pImage" alt="default female pic" src="{% static 'static_images/bigender.jpg' %}">
+
+                                        {% elif user.profilemodel.gender == 'Female' %}
+                                            <img class="d-inline-block mr-2" id="pImage" alt="default female pic" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                                        {% else %}
+                                            <img class="d-inline-block mr-2" id="pImage" alt="default male pic" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                        {% endif %}
+                                    {% else %}
+                                        <img class="d-inline-block mr-2" id="pImage" alt="{{ profile.username }} pic" src="{{ user.profilemodel.profile_pic.url }}">
+                                    {%endif %}
+                                    <h3 class="card-title text-capitalize my-1 d-inline-block">{{ user.username }}</h3>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                         <div id="lol">
                             <div class="card-body py-0 px-md-1" id="chatWindow">
