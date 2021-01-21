@@ -15,6 +15,7 @@ class ProfileModel(models.Model):
     profile_pic = models.ImageField(upload_to='profile_images/', null=True)
     gender = models.CharField(choices=GENDER, null=True, max_length=8)
     age = models.IntegerField(choices=AGE, null=True)
+    bio = models.CharField(max_length=100, blank=True)
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 

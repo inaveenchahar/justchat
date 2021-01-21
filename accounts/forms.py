@@ -79,6 +79,12 @@ class ProfileEditForm(forms.ModelForm):
     age = forms.ChoiceField(choices=AGE, widget=forms.Select(attrs={
         'class': 'form-control',
     }), label='Age')
+    bio = forms.CharField(widget=forms.Textarea(attrs={
+        'rows': 3,
+        'class': 'form-control',
+        'placeholder': 'Bio',
+        'style': 'font-size:14px;',
+    }), label='Bio', required=False)
 
     class Meta:
         model = ProfileModel
