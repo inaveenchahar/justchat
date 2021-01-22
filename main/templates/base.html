@@ -31,11 +31,12 @@
                 <li class="nav-item">
                     <form method="GET" action="{% url 'main:home' %}" class="form-inline">
                         <div class="input-group">
-                        <input placeholder="Search Username" value="{{ request.GET.q }}" name="q" type="text" class="form-control">
-                        <div class="input-group-append">
-                            <input id="chat-message-submit" type=submit value="Search" class="btn btn-secondary px-3">
+                            <input placeholder="Search Username" value="{{ request.GET.q }}" name="q" type="text" class="form-control" style="font-size: 14px">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="submit"><i class="fa fa-search text-white" aria-hidden="true"></i></button>
+{#                                <input type=submit value="Search" class="btn btn-secondary px-3">#}
+                            </div>
                         </div>
-                    </div>
                     </form>
 
                 </li>

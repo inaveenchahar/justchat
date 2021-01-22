@@ -49,3 +49,7 @@ h5{
     line-height: 16px !important;
     font-family: 'Roboto', sans-serif;
 }
+
+select{
+    font-size: 14px !important;
+}

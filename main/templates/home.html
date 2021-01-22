@@ -34,7 +34,7 @@
                     <div class="pagination my-3">
                         <span class="step-links">
                             {% if page_obj.has_previous %}
-                                <a class="badge badge-info badge-pill" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                <a class="badge badge-info px-3 py-2" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                             {% endif %}
 
 {#                            <span class="current">#}
@@ -42,11 +42,50 @@
 {#                            </span>#}
 
                             {% if page_obj.has_next %}
-                                <a class="badge badge-info badge-pill" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                <a class="badge badge-info px-3 py-2" href="?page={{ page_obj.next_page_number }}">Next</a>
 {#                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
                             {% endif %}
                         </span>
                     </div>
+                </div>
+
+                <div class="col-md-4">
+                    <form action="{% url 'main:home' %}" class="form-row" method="GET">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="genderFilter" style="font-size: 14px">Gender</label>
+                                <select class="form-control" id="genderFilter" name="gender">
+                                     {% if request.GET.aFilter %}
+                                        <option>{{ request.GET.gender }}</option>
+                                    {% else %}
+                                        <option>All</option>
+                                    {% endif %}
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="ageFilter" style="font-size: 14px">Age</label>
+                                <select class="form-control" id="ageFilter" name="aFilter">
+                                    {% if request.GET.aFilter %}
+                                        <option>{{ request.GET.aFilter }}</option>
+                                    {% else %}
+                                        <option>All</option>
+                                    {% endif %}
+
+                                    {% for age in all_ages %}
+                                        <option>{{ age }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="submit" value="Filter" class="btn btn-block btn-primary">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
