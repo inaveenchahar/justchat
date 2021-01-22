@@ -28,6 +28,17 @@
                 <li class="nav-item ">
                     <a href="{% url 'main:home' %}" class="nav-link">Home</a>
                 </li>
+                <li class="nav-item">
+                    <form method="GET" action="{% url 'main:home' %}" class="form-inline">
+                        <div class="input-group">
+                        <input placeholder="Search Username" value="{{ request.GET.q }}" name="q" type="text" class="form-control">
+                        <div class="input-group-append">
+                            <input id="chat-message-submit" type=submit value="Search" class="btn btn-secondary px-3">
+                        </div>
+                    </div>
+                    </form>
+
+                </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">

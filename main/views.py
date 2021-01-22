@@ -8,6 +8,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
     all_user = ProfileModel.objects.all().exclude(user=request.user).order_by('-user__last_login')
+
+    query = request.GET.get('q')
+    if query:
+        all_user = ProfileModel.objects.filter(user__username__icontains=query).exclude(user=request.user).order_by('-user__last_login')
     paginator = Paginator(all_user, 24)  # Show 24 users per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
