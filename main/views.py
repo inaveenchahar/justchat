@@ -9,7 +9,9 @@ from django.core.paginator import Paginator
 
 
 def home(request):
-    all_user = ProfileModel.objects.all().exclude(user=request.user).order_by('-user__last_login')
+    all_user = ProfileModel.objects.all().order_by('-user__last_login')
+    if request.user.is_authenticated:
+        all_user = all_user.exclude(user=request.user)
     all_ages = [i for i in range(16, 101)]
 
     # search users by their username
