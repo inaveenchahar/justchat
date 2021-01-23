@@ -2,6 +2,8 @@
 
 {% block content %}
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+
     <section>
         <div class="container py-3 py-md-5">
             <div class="row">
@@ -13,14 +15,14 @@
                                     <div class="card bg-light">
                                         {% if not user.profile_pic %}
                                             {% if user.gender == 'Others' %}
-                                                <img alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
+                                                <img id="userPic" alt="default female pic" class="card-img-top" src="{% static 'static_images/bigender.jpg' %}">
                                             {% elif user.gender == 'Female' %}
-                                                <img alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
+                                                <img id="userPic" alt="default female pic" class="card-img-top" src="{% static 'static_images/female_profile_pic.jpg' %}">
                                             {% else %}
-                                                <img alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                                <img id="userPic" alt="default male pic" class="card-img-top" src="{% static 'static_images/male_profile_pic.jpg' %}">
                                             {% endif %}
                                         {% else %}
-                                            <img alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profile_pic.url }}">
+                                            <img id="userPic" alt="{{ user.username }} pic" class="card-img-top" src="{{ user.profile_pic.url }}">
                                         {%endif %}
                                         <div class="card-body p-1">
                                             <p class="card-title mb-0" style="font-size: 10px">{{ user.user.username }}</p>
