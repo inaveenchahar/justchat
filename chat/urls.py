@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('messages/', views.inbox_conversation, name='inbox'),
     path('connect/<username>/', views.index_room, name='index_room'),
-    path('<room_name>/', views.room_view, name='room')
+    path('<room_name>/', views.room_view, name='room'),
+    path('<room_name>/delete-chat/', views.delete_chat, name='delete_chat'),
 ]

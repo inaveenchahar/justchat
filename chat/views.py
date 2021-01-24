@@ -59,3 +59,13 @@ def room_view(request, room_name):
         return redirect('main:home')
     else:
         return HttpResponse('Login required')
+
+
+def delete_chat(request, room_name):
+    if request.user.is_authenticated:
+        current_room = get_object_or_404(Room, slug=room_name)
+        if request.user in current_room.room_members.all():
+            ChatModel.objects.filter(room=current_room).delete()
+            return redirect('room', room_name)
+        return redirect('main:home')
+    return redirect('main:home')

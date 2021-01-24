@@ -82,7 +82,9 @@
                                     <a href="{% url 'main:profile_detail' user.username %}" class="text-dark text-decoration-none card-title d-inline-block my-1">
                                         <h3 class="text-capitalize">{{ user.first_name }} {{ user.last_name }}</h3>
                                     </a>
-
+                                    <a class="text-danger float-right small mt-2" href="{% url 'delete_chat' current_room.slug %}">
+                                        Delete Chat &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
                                 {% endif %}
                             {% endfor %}
                         </div>
