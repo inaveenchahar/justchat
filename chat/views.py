@@ -47,12 +47,14 @@ def index_room(request, username):
 def room_view(request, room_name):
     if request.user.is_authenticated:
         current_room = get_object_or_404(Room, slug=room_name)
-        if request.user in current_room.room_members.all():
+        current_room_members = current_room.room_members.all()
+        if request.user in current_room_members:
             all_conversations = Room.objects.filter(room_members__in=[request.user])
             # only last 50 messages will be visible in the room
             all_messages = ChatModel.objects.filter(room=current_room).order_by('added_on')[:50]
             return render(request, 'room.html', {'room_name': room_name,
                                                  'current_room': current_room,
+                                                 'current_room_members': current_room_members,
                                                  'all_messages': all_messages,
                                                  'all_conversations': all_conversations
                                                  })

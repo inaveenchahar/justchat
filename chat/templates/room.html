@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %} JustChat |
-    {% for user in current_room.room_members.all %}
+    {% for user in current_room_members %}
         {% if user.username != request.user.username %}
             {{ user.username }}
         {% endif %}
@@ -66,21 +66,22 @@
 
                     <div id="chatCard" class="card">
                         <div id="cHeader" class="card-header py-2">
-                            {% for user in current_room.room_members.all %}
-                                {% if user.username != request.user.username %}
-                                    {% if not user.profilemodel.profile_pic %}
-                                        {% if user.profilemodel.gender == 'Others' %}
-                                            <img class="d-inline-block mr-2" id="pImage" alt="default female pic" src="{% static 'static_images/bigender.jpg' %}">
-                                        {% elif user.profilemodel.gender == 'Female' %}
+                            {# displays room members pictures and name in card header  #}
+                            {% for member in current_room_members %}
+                                {% if member.username != request.user.username %}
+                                    {% if not member.profilemodel.profile_pic %}
+                                        {% if member.profilemodel.gender == 'Others' %}
+                                            <img class="d-inline-block mr-2" id="pImage" alt="default others pic" src="{% static 'static_images/bigender.jpg' %}">
+                                        {% elif member.profilemodel.gender == 'Female' %}
                                             <img class="d-inline-block mr-2" id="pImage" alt="default female pic" src="{% static 'static_images/female_profile_pic.jpg' %}">
                                         {% else %}
-                                            <img class="d-inline-block mr-2" id="pImage" alt="default male pic" src="{% static 'static_images/male_profile_pic.jpg' %}">
+                                            <img class="d-inline-block mr-2" id="pImage" alt="default pic" src="{% static 'static_images/male_profile_pic.jpg' %}">
                                         {% endif %}
                                     {% else %}
-                                        <img class="d-inline-block mr-2" id="pImage" alt="{{ profile.username }} pic" src="{{ user.profilemodel.profile_pic.url }}">
+                                        <img class="d-inline-block mr-2" id="pImage" alt="{{ profile.username }} pic" src="{{ member.profilemodel.profile_pic.url }}">
                                     {%endif %}
-                                    <a href="{% url 'main:profile_detail' user.username %}" class="text-dark text-decoration-none card-title d-inline-block my-1">
-                                        <h3 class="text-capitalize">{{ user.first_name }} {{ user.last_name }}</h3>
+                                    <a href="{% url 'main:profile_detail' member.username %}" class="text-dark text-decoration-none card-title d-inline-block my-1">
+                                        <h3 class="text-capitalize">{{ member.first_name }} {{ member.last_name }}</h3>
                                     </a>
                                     <a class="text-danger float-right small mt-2" href="{% url 'delete_chat' current_room.slug %}">
                                         Delete Chat &nbsp;<i class="fa fa-trash-o" aria-hidden="true"></i>
