@@ -68,6 +68,6 @@ def delete_chat(request, room_name):
         current_room = get_object_or_404(Room, slug=room_name)
         if request.user in current_room.room_members.all():
             ChatModel.objects.filter(room=current_room).delete()
-            return redirect('room', room_name)
+            return redirect('inbox')
         return redirect('main:home')
     return redirect('main:home')
