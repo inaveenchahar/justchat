@@ -68,17 +68,18 @@ class UserEditForm(forms.ModelForm):
 
 class ProfileEditForm(forms.ModelForm):
     GENDER = (
+        ('--', '--'),
         ('Male', 'Male'),
         ('Female', 'Female'),
         ('Others', 'Others')
     )
-    AGE = [(i, i) for i in range(16, 101)]
+    AGE = [('--', '--')] + [(i, i) for i in range(18, 101)]
     gender = forms.ChoiceField(choices=GENDER, widget=forms.Select(attrs={
         'class': 'form-control',
     }), label='Gender')
     age = forms.ChoiceField(choices=AGE, widget=forms.Select(attrs={
         'class': 'form-control',
-    }), label='Age')
+    }), label='Age', required=False)
     bio = forms.CharField(widget=forms.Textarea(attrs={
         'rows': 3,
         'class': 'form-control',

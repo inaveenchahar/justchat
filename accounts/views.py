@@ -28,7 +28,7 @@ def sign_up(request):
                 email=instance.email,
                 password=instance.password
             )
-            new_profile = ProfileModel.objects.create(user=new_user)
+            new_profile = ProfileModel.objects.create(user=new_user, gender='--')
             """
                 try else is to send email
             """

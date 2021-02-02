@@ -6,11 +6,12 @@ from django.contrib.auth.models import User
 
 class ProfileModel(models.Model):
     GENDER = (
+        ('--', '--'),
         ('Male', 'Male'),
         ('Female', 'Female'),
         ('Others', 'Others')
     )
-    AGE = [(i, i) for i in range(16, 101)]
+    AGE = [('--', '--')] + [(i, i) for i in range(18, 101)]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_pic = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     gender = models.CharField(choices=GENDER, null=True, max_length=8)
