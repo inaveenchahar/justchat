@@ -139,3 +139,13 @@ CHANNEL_LAYERS = {
     },
 }
 
+
+# for password reset feature
+
+EMAIL_HOST = 'smtp.gmail.com'
+PORT = 587  # don't change it if email host is google/gmail
+EMAIL_HOST_USER = 'your email here'     # update this
+EMAIL_HOST_PASSWORD = 'email secret key'    # update this
+EMAIL_USE_TLS = True
+
+
